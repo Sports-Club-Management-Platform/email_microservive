@@ -1,0 +1,37 @@
+name: email_microservice1
+services:
+  email_microservice:
+    build:
+      context: .
+      dockerfile: test.dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    environment:
+      - RABBITMQ_URL=amqp://user:password@rabbitmq:5672
+    volumes:
+      - .:/api
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: heidiks/rabbitmq-delayed-message-exchange:latest
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - 15672:15672
+      - 5672:5672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "node_health_check"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - data_rabbitmq:/var/lib/rabbitmq
+
+volumes:
+  data_rabbitmq:
+    driver: local
