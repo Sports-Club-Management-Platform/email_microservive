@@ -7,6 +7,9 @@ import json
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
+from dotenv import load_dotenv
+
+load_dotenv()
 
 RABBITMQ_URL = os.environ.get("RABBITMQ_URL")
 SERVICE_ID = os.environ.get("SERVICE_ID")
