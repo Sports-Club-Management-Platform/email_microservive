@@ -40,7 +40,6 @@ def test_send_email_success(mock_post):
             "user_name": data["user_name"],
             "ticket_name": data["ticket_name"],
             "ticket_price": data["ticket_price"],
-            "ticket_id": data["ticket_id"],
             "attachment": barcode_src,
             "to_email": data["to_email"],
         },
