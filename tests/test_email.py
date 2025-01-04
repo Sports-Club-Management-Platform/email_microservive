@@ -21,7 +21,7 @@ def test_send_email_success(mock_post):
         "ticket_name": "Finais",
         "ticket_price": "150",
         "ticket_id": "789109876543",
-        "to_email": "andreoliveira.net1@gmail.com",
+        "to_email": "andreoliveira@gmail.com",
     }
 
     # Gerando código de barras esperado
