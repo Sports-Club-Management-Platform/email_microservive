@@ -1,3 +1,5 @@
+import logging
+import sys
 from contextlib import asynccontextmanager
 import asyncio
 import requests
@@ -21,6 +23,9 @@ TEMPLATE_ID = os.environ.get("TEMPLATE_ID")
 PUBLIC_KEY = os.environ.get("PUBLIC_KEY")
 PRIVATE_KEY = os.environ.get("PRIVATE_KEY")
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler(sys.stdout))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -37,6 +42,7 @@ async def lifespan(app: FastAPI):
         async with queue.iterator() as queue_iter:
             async for message in queue_iter:
                 async with message.process():
+                    logger.info(f"Received message: {message.body}")
                     send_email(json.loads(message.body))
 
     # Run RabbitMQ listener in the background
@@ -112,6 +118,6 @@ def send_email(data):
     )
 
     if response.status_code == 200:
-        print("E-mail enviado com sucesso!")
+        logger.info("E-mail enviado com sucesso!")
     else:
-        print(f"Falha ao enviar e-mail: {response.status_code} - {response.text}")
+        logger.error(f"Falha ao enviar e-mail: {response.status_code} - {response.text}")
