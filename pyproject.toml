@@ -1,9 +1,12 @@
 [tool.poetry]
-name = "email-microservice"
+name = "email_microservice"
 version = "0.1.0"
 description = ""
 authors = ["AndreOliveira <andreaoliveira@ua.pt>"]
 readme = "README.md"
+packages = [
+    { include = "tests" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.10.12"
